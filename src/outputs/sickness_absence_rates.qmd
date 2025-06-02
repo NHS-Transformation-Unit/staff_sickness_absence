@@ -1,0 +1,48 @@
+---
+title: "NHS Sickness Absence Rates across England"
+author: "<a href='https://github.com/ASW-Analyst/'>Andy Wilson</a><br><a href='https://transformationunit.nhs.uk/'>NHS Transformation Unit</a>"
+date: "06/02/2025"
+date-format: "DD MMMM YYYY"
+format: 
+  html:
+    toc: true
+    toc-depth: 2
+    toc-location: left
+    self-contained: true
+    css: ../config/nhs_tu_theme.css
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  out.width = '100%'
+)
+
+library(here)
+source(paste0(here(), "/src/requirements/packages.R"))
+source(paste0(here(), "/src/config/palette.R"))
+source(paste0(here(), "/src/config/connection.R"))
+source(paste0(here(), "/src/load/load.R"))
+source(paste0(here(), "/src/analysis/time_series.R"))
+
+
+```
+
+# Introduction
+Purpose of this analysis
+
+<br/>
+
+# Sickness and Absence Rates
+
+## National Picture
+What has happened with rates compared to before the pandemic
+
+```{r eng_ts}
+
+chart_eng_ts
+
+```
+
