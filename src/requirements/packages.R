@@ -8,7 +8,8 @@ packages <- c("here",
               "lubridate",
               "readr",
               "ggplot2",
-              "stringr")
+              "stringr",
+              "readxl")
 
 
 # Load Packages -----------------------------------------------------------

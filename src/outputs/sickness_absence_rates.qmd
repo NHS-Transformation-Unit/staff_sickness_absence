@@ -25,24 +25,113 @@ source(paste0(here(), "/src/requirements/packages.R"))
 source(paste0(here(), "/src/config/palette.R"))
 source(paste0(here(), "/src/config/connection.R"))
 source(paste0(here(), "/src/load/load.R"))
+source(paste0(here(), "/src/load/load_sickness_reasons.R"))
 source(paste0(here(), "/src/analysis/time_series.R"))
+source(paste0(here(), "/src/analysis/sickness_reasons.R"))
 
 
 ```
 
+```{r tu logo, echo = FALSE}
+
+htmltools::img(src = knitr::image_uri(paste0(here(), "/images/TU_logo_large.png")), 
+               alt = 'logo', 
+               style = 'position:absolute; top:0; right:5%; padding:10px;',
+               width = "180px",
+               heigth = "180px")
+
+```
+
 # Introduction
-Purpose of this analysis
+***
+Addressing staff sickness absence rates will be critical to ensuring that the ambitions of the NHS ten-year plan can be delivered. Simply put, without a healthy and available workforce, the NHS can't deliver safe, quality and effective care for its patients. Therefore, we need to understand what is currently happening with sickness absence rates, the drivers of this and what can we learn from the staff survey.
+
+:::{.callout-note}
+## Data and Methodology
+All of the data used in this analysis is publicly available, please see the **Metadata** section at the bottom of this page. The code used to produce the analysis is also publicly available on our [GitHub repository](https://github.com/NHS-Transformation-Unit/staff_sickness_absence).
+
+:::
 
 <br/>
 
-# Sickness and Absence Rates
+# Sickness Absence Rates
+***
 
 ## National Picture
-What has happened with rates compared to before the pandemic
+There has been a consistent and persistent increase in staff sickness absence rates across the NHS over the last seven years. Whilst rates have declined a little since the peak of the Omicron wave in late 2021 and early 2022 they remain stubbornly high. As of January 2025, the sickness absence rate across the NHS in England was **5.7%**. This can be seen in the chart below:
 
 ```{r eng_ts}
 
 chart_eng_ts
 
 ```
+
+
+## This is a problem across all roles and regions
+Its important to explore this trend in more detail. *Is this picture the same across all regions of the country? Is it being driven by higher sickness rates in particular staffing groups?*
+
+The chart below shows the sickness absence rates for each of the NHS England regions. Whilst there is variation in sickness rates across the regions they all show a remarkably consistent trend in rates. The persistent rise since the pandemic is a problem shared across all regions.
+
+```{r eng_reg_ts}
+
+chart_eng_reg_ts
+
+```
+
+The data on staff sickness absence rates can also be broken down into different staffing groups. The chart below shows how the rates have changed between 2019 and 2024:
+
+```{r eng_roles_comp}
+
+chart_eng_roles_comp
+
+```
+
+We can see from this that there is significant variation in sickness rates between the different staffing groups. Rates for those roles in the *Support to ambulance* staff group are **`r top_bottom_comp`** times higher than *HCHS doctors*. However, all staffing groups have seen an increase in sickness rates compared to pre-pandemic.
+
+## What is behind sickness absence rates
+We can break down the latest month of data, January 2025, to see the reasons recorded against staff being off with sickness. This shows that the largest reason for absence is mental health related, *Anxiety/stress/depression/other psychiatric illnesses* accounting for nearly a quarter of all days lost. Therefore, addressing the mental health and wellbeing of staff must be a priority within the ten-year plan. The chart below shows the five largest reasons for lost days:
+
+```{r eng_reasons_latest}
+
+chart_sickness_reason
+
+```
+
+
+# What does the staff survey tell us?
+***
+The annual [NHS Staff Survey](https://www.nhsstaffsurveys.com/) offers an opportunity to understand how staff across the NHS feel. The latest survey was undertaken in autumn 2024. From the survey results we can see that:
+
+* **15.3%** of staff surveyed **strongly disagreed or disagreed** with the statement that their organisation takes positive action on health and well-being.
+* **30.2%** of staff surveyed either **always or often** felt burnt out because of work.
+* **27.4%** of staff surveyed either **always or often** felt exhausted at the thought of another day or shift at work.
+
+Whilst there are challenges within the staff survey it also provides an opportunity to identify organisations where staff feel positive about their health and wellbeing. For example, Cambridgeshire Community Services NHS Trust, Berkshire Healthcare NHS Foundation Trust and Liverpool Heart and Chest Hospital NHS Foundation Trust have some of the highest rates of staff agreeing that their organisation takes positive action on health and well-being. What can we learn from these organisations where staff feel positive? What can be adopted elsewhere?
+
+<br/>
+
+# Conclusions
+***
+The NHS faces significant challenges such as caring for a population with more complex health needs, adopting new treatments and recovering access to services following the Covid-19 pandemic. Meeting these challenges will become even harder without a healthy and motivated workforce. Therefore, understanding and addressing the reasons behind increasing staff sickness rates must be a key priority for organisations across the NHS. Improving staff health and wellbeing must be at the heart of the forthcoming ten year plan.
+
+<br/>
+
+# Useful Reading
+***
+
+Whilst undertaking this analysis I found the following both interesting and helpful:
+
+* **Interactive staff sickness dashboard created by NHS England**: This interactive [dashboard](https://app.powerbi.com/view?r=eyJrIjoiZWQ2YmE4ZWEtNDAzZS00MzI3LTgwOTQtNjBlNjRkNDUwYTRiIiwidCI6IjM3YzM1NGIyLTg1YjAtNDdmNS1iMjIyLTA3YjQ4ZDc3NGVlMyJ9) has been created by NHS England and can be used to explore staff sickness absence rates in more detail.
+
+* **All is not well: Sickness absence in the NHS in England - Nuffield Trust**: This interesting [report](https://www.nuffieldtrust.org.uk/resource/all-is-not-well-sickness-absence-in-the-nhs-in-england) published in June 2023 also highlighting the challenges discussed in this analysis.
+
+<br/>
+
+# Metadata
+***
+The data used for this analysis is available from:
+
+* Staff Sickness Rates: Latest data published in January 2025 available [here](https://digital.nhs.uk/data-and-information/publications/statistical/nhs-sickness-absence-rates/january-2025).
+* NHS Staff Survey Results: Latest data available [here](https://www.nhsstaffsurveys.com/results/interactive-results/).
+
 

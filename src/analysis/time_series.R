@@ -20,7 +20,7 @@ chart_eng_ts <- ggplot(sickness_eng_ts, aes(x = Effective_Snapshot_Date, y = Sic
   labs(x = "Month",
        y = "Sickness Rate (% of FTE Days Available)",
        caption = "Source: NHS England Workforce Statistics",
-       title = "Sickness absence rates remain significantly higher after the pandemic",
+       title = str_wrap("Sickness absence rates remain significantly higher after the pandemic", width = 50),
        subtitle = "NHS England - All organisations and staff groups") +
   theme(text = element_text(family = "Franklin Gothic Book"),
         strip.background = element_rect(fill = "#407EC9"),
@@ -69,10 +69,10 @@ end_labels_reg <- sickness_reg_ts |>
   group_by(Region) |>
   filter(Effective_Snapshot_Date == max(Effective_Snapshot_Date))
 
-ggplot(sickness_reg_ts, aes(x = Effective_Snapshot_Date, y = Sickness_Rate, color = Region)) +
+chart_eng_reg_ts <- ggplot(sickness_reg_ts, aes(x = Effective_Snapshot_Date, y = Sickness_Rate, color = Region)) +
   geom_line() +
   scale_colour_manual(values = palette_region) +
-  geom_text(data = end_labels_reg, aes(label = str_wrap(Region, width = 15)), hjust = -0.1, size = 3) +
+  geom_text(data = end_labels_reg, aes(label = str_wrap(Region, width = 15)), hjust = -0.1, size = 2.5) +
   scale_x_date(date_breaks = "4 months", date_labels = "%b-%y", expand = expansion(mult = c(0, 0.1))) +
   scale_y_continuous(labels = scales::percent) +
   annotate("text", x = as.Date(c("2020-04-30")), y = 0.085, label = "Start of pandemic", hjust = 0, color = "#912714") +
@@ -82,7 +82,7 @@ ggplot(sickness_reg_ts, aes(x = Effective_Snapshot_Date, y = Sickness_Rate, colo
   labs(x = "Month",
        y = "Sickness Rate (% of FTE Days Available)",
        caption = "Source: NHS England Workforce Statistics",
-       title = "Sickness absence rates remain significantly higher after the pandemic across all regions",
+       title = str_wrap("Sickness absence rates remain significantly higher after the pandemic across all regions", width = 50),
        subtitle = "NHS England Regions - All organisations and staff groups") +
   guides(color = "none") +
   theme(text = element_text(family = "Franklin Gothic Book"),
@@ -169,3 +169,67 @@ ggplot(sickness_role_ts, aes(x = Effective_Snapshot_Date, y = Sickness_Rate)) +
         legend.position = "bottom",
         legend.text = element_text(size = 7.5)
   )
+
+sickness_roles_comp <- sickness |>
+  filter(Staff_Group != "All staff groups",
+         Effective_Snapshot_Date > as.Date(c("2018-03-31")),
+         !Staff_Group %in% c("Unknown classification", "Other staff or those with unknown classification")) |>
+  mutate(Staff_Group = case_when(Staff_Group == "HCHS Doctors" ~ "HCHS doctors",
+                                 TRUE ~ Staff_Group)) |>
+  mutate(Year = year(Effective_Snapshot_Date)) |>
+  filter(Year %in% c(2019, 2024)) |>
+  group_by(Staff_Group, Year) |>
+  summarise(FTE_Days_Lost = sum(FTE_Days_Lost, na.rm = TRUE),
+            FTE_Days_Available = sum(FTE_Days_Available, na.rm = TRUE)) |>
+  mutate(Sickness_Rate = FTE_Days_Lost / FTE_Days_Available,
+         Year = factor(Year, levels = c(2019, 2024))) |>
+  mutate(Staff_Group = factor(Staff_Group, levels = c("Support to ambulance staff",
+                                                      "Hotel, property & estates",
+                                                      "Support to doctors, nurses & midwives",
+                                                      "Ambulance staff",
+                                                      "Support to ST&T staff",
+                                                      "Midwives",
+                                                      "Nurses & health visitors",
+                                                      "Central functions",
+                                                      "Scientific, therapeutic & technical staff",
+                                                      "Managers",
+                                                      "Senior managers",
+                                                      "HCHS doctors"))) |>
+  mutate(Staff_Group_wrap = str_wrap(Staff_Group, width = 25),
+         Staff_Group_wrap = factor(Staff_Group_wrap,
+                                   levels = str_wrap(levels(Staff_Group), width = 25)))
+
+chart_eng_roles_comp <- ggplot(sickness_roles_comp, aes(y = Staff_Group_wrap, x = Sickness_Rate, group = Staff_Group)) +
+  geom_line(arrow = arrow(type = "closed", length = unit(0.2, "cm")), linewidth = 0.3) +
+  geom_point(aes(colour = Year), size = 2.2) +
+  scale_colour_manual(values = c(palette_tu[1], palette_tu[7])) +
+  scale_x_continuous(labels = scales::percent, breaks = seq(0, 0.8, by = 0.01)) +
+  labs(y = "Staffing Group",
+       x = "Sickness Rate (% of FTE Days Available)",
+       caption = "Source: NHS England Workforce Statistics",
+       title = str_wrap("All Staffing Groups have seen an increase from 2019 to 2024", width = 50),
+       subtitle = "NHS England by staffing group - 2019 and 2024 aggregated") +
+  theme(text = element_text(family = "Franklin Gothic Book"),
+        strip.background = element_rect(fill = "#407EC9"),
+        strip.text = element_text(colour = "#ffffff", size = 10),
+        axis.text = element_text(size = 10),
+        axis.title = element_text(size = 11),
+        plot.title = element_text(size = 16, color = "#407EC9"),
+        plot.subtitle = element_text(size = 12),
+        panel.background = element_rect(fill = "#ffffff"),
+        panel.grid.major.x = element_line(color = "#cecece", linewidth = 0.1),
+        panel.grid.minor.x = element_blank(),
+        axis.line = element_line(color = "#000000"),
+        legend.position = "bottom",
+        legend.text = element_text(size = 10)
+  )
+
+hscs_2024 <- sickness_roles_comp |>
+  filter(Staff_Group == "HCHS doctors",
+         Year == 2024)
+
+sas_2024 <- sickness_roles_comp |>
+  filter(Staff_Group == "Support to ambulance staff",
+         Year == 2024)
+
+top_bottom_comp <- round(sas_2024[[1, 5]] / hscs_2024[[1, 5]], 1)
