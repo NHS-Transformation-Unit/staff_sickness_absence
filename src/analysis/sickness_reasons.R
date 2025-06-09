@@ -2,6 +2,8 @@
 # Reasons chart -----------------------------------------------------------
 
 sickness_reason_df <- sickness_reason |>
+  group_by(REASON) |>
+  summarise(FTE_DAYS_LOST = sum(FTE_DAYS_LOST, na.rm = TRUE)) |>
   mutate(perc = FTE_DAYS_LOST / sum(FTE_DAYS_LOST),
          reason_trimmed = substring(REASON, 5, nchar(REASON))) |>
   arrange(desc(perc)) |>
@@ -15,7 +17,7 @@ chart_sickness_reason <- ggplot(sickness_reason_df, aes(y = reorder(reason_trimm
   labs(x = "Percentage of FTE days lost",
        y = "Sickness Absence Reason",
        title = str_wrap("Days lost due to mental health represent the largest reason for sickness absence", width = 40),
-       subtitle = "Top 5 Reasons | NHS England January 2025",
+       subtitle = "Top 5 Reasons | NHS England 12 months ending January 2025",
        caption = "Source: Source: NHS England Workforce Statistics") +
   theme(text = element_text(family = "Franklin Gothic Book"),
         strip.background = element_rect(fill = "#407EC9"),
@@ -31,5 +33,3 @@ chart_sickness_reason <- ggplot(sickness_reason_df, aes(y = reorder(reason_trimm
         legend.position = "bottom",
         legend.text = element_text(size = 10)
   )
-
-chart_sickness_reason
