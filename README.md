@@ -9,6 +9,7 @@ The current structure of the repository is detailed below:
 ``` plaintext
 
 ├───data
+├───documentation
 ├───images
 └───src
     ├───analysis
@@ -21,6 +22,9 @@ The current structure of the repository is detailed below:
 
 ### `data`
 Contains raw downloads of NHS staff survey and sickness reasons data
+
+### `documentation`
+Contains a `.md` file with a description of the datasets used and links to their availability.
 
 ### `images`
 Contains the TU logo for outputs
