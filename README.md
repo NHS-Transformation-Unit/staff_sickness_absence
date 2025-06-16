@@ -8,6 +8,7 @@ The current structure of the repository is detailed below:
 
 ``` plaintext
 
+├───.github/workflows
 ├───data
 ├───documentation
 ├───images
@@ -19,6 +20,9 @@ The current structure of the repository is detailed below:
     └───requirements
     
 ```
+
+### `.github/workflows`
+Contains `deploy.yml` for deploying the outputs of the analysis as a static github page
 
 ### `data`
 Contains raw downloads of NHS staff survey and sickness reasons data
