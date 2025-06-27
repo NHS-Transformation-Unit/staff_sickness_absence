@@ -17,7 +17,7 @@ chart_sickness_reason <- ggplot(sickness_reason_df, aes(y = reorder(reason_trimm
   labs(x = "Percentage of FTE days lost",
        y = "Sickness Absence Reason",
        title = str_wrap("Days lost due to mental health represent the largest reason for sickness absence", width = 40),
-       subtitle = "Top 5 Reasons | NHS England 12 months ending January 2025",
+       subtitle = "Top 5 Reasons | NHS England 12 months ending February 2025",
        caption = "Source: Source: NHS England Workforce Statistics") +
   theme(text = element_text(family = "Franklin Gothic Book"),
         strip.background = element_rect(fill = "#407EC9"),
@@ -25,7 +25,7 @@ chart_sickness_reason <- ggplot(sickness_reason_df, aes(y = reorder(reason_trimm
         axis.text = element_text(size = 10),
         axis.title = element_text(size = 11),
         plot.title = element_text(size = 16, color = "#407EC9"),
-        plot.subtitle = element_text(size = 12),
+        plot.subtitle = element_text(size = 11),
         panel.background = element_rect(fill = "#ffffff"),
         panel.grid.major.x = element_line(color = "#cecece", linewidth = 0.1),
         panel.grid.minor.x = element_blank(),
